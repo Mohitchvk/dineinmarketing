@@ -2,8 +2,40 @@ import streamlit as st
 from datetime import datetime
 import pandas as pd
 import uuid
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import os
+
+
+import streamlit as st
 import boto3
-from botocore.exceptions import ClientError
+import json
+
+def upload_to_s3(data, bucket_name, key):
+    s3 = boto3.client(
+        's3',
+        aws_access_key_id=st.secrets["AWS_ACCESS_KEY_ID"],
+        aws_secret_access_key=st.secrets["AWS_SECRET_ACCESS_KEY"],
+        region_name=st.secrets["AWS_DEFAULT_REGION"]
+    )
+    s3.put_object(
+        Bucket=bucket_name,
+        Key=key,
+        Body=json.dumps(data)
+    )
+
+# Example usage in a function
+def log_visit():
+    from datetime import datetime
+    log_data = {
+        'timestamp': datetime.now().isoformat(),
+        'user_id': st.session_state.get("user_id", "unknown"),
+        'page': 'main'
+    }
+    # Define the S3 key for this log entry.
+    key = f"logs/{st.session_state.user_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.json"
+    upload_to_s3(log_data, "your-bucket-name", key)
 
 # Configure page
 st.set_page_config(
@@ -27,33 +59,31 @@ DAILY_OFFERS = {
     6: "Sunday Social: Chef's Tasting Menu Preview"
 }
 
-# Set up CloudWatch logging
-cloudwatch_client = boto3.client('logs')
-log_group_name = 'streamlit_app_logs'
-
-def log_event(message):
-    timestamp = int(datetime.now().timestamp() * 1000)
-    try:
-        cloudwatch_client.put_log_events(
-            logGroupName=log_group_name,
-            logStreamName='app_events',
-            logEvents=[
-                {
-                    'timestamp': timestamp,
-                    'message': message
-                }
-            ]
-        )
-    except Exception as e:
-        st.error(f"Error logging to CloudWatch: {e}")
-
-# Set up SES client
-ses_client = boto3.client('ses')
+# def log_visit():
+#     """Log visit data"""
+#     log_data = {
+#         'timestamp': datetime.now().isoformat(),
+#         'user_id': st.session_state.user_id,
+#         'page': 'main'
+#     }
+    
+#     # In a production environment, you'd want to use a proper logging service
+#     # For Streamlit deployment, we'll use a simple print statement
+#     print(f"Visit logged: {log_data}")
 
 def send_confirmation_email(name, email, date, party_size):
-    SENDER = "your_verified_email@example.com"
-    SUBJECT = "Reservation Confirmed!"
-    BODY_TEXT = f"""
+    """Send confirmation email"""
+    # Email configuration
+    sender_email = "your_email@example.com"
+    sender_password = "your_email_password"
+    
+    # Create message
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = email
+    message['Subject'] = "Reservation Confirmed!"
+    
+    body = f"""
     Dear {name},
     
     Your reservation for {party_size} on {date} has been confirmed.
@@ -63,24 +93,22 @@ def send_confirmation_email(name, email, date, party_size):
     The Taste & Toast Team
     """
     
+    message.attach(MIMEText(body, 'plain'))
+    
+    # Send email
     try:
-        response = ses_client.send_email(
-            Destination={'ToAddresses': [email]},
-            Message={
-                'Body': {'Text': {'Charset': "UTF-8", 'Data': BODY_TEXT}},
-                'Subject': {'Charset': "UTF-8", 'Data': SUBJECT},
-            },
-            Source=SENDER
-        )
-    except ClientError as e:
-        st.error(f"Error sending email: {e.response['Error']['Message']}")
-        return False
-    else:
-        st.success("Email sent successfully!")
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.send_message(message)
         return True
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return False
 
 def main():
-    log_event("App started")
+    # Log visit
+    log_visit()
     
     today = datetime.today().weekday()
     
@@ -92,6 +120,7 @@ def main():
             "Experience": list(DAILY_OFFERS.values())
         }))
     
+    # Value proposition
     st.markdown("""
     **Your Exclusive Benefits:**
     - Complimentary tasting notes with any entrée
@@ -100,6 +129,7 @@ def main():
     - Chef-curated pairing suggestions
     """)
     
+    # Event reservation
     with st.form("reservation"):
         st.write("Reserve Your Experience")
         name = st.text_input("Name for reservation")
@@ -108,12 +138,11 @@ def main():
         event_date = st.date_input("Preferred date")
         
         if st.form_submit_button("Request Reservation"):
-            log_event(f"Reservation attempt: {name}, {email}, {party_size}, {event_date}")
             if send_confirmation_email(name, email, event_date, party_size):
                 st.success("Reservation confirmed! Check your email for details.")
-                log_event(f"Reservation confirmed: {name}, {email}, {party_size}, {event_date}")
             else:
                 st.error("There was an issue confirming your reservation. Please try again or contact us directly.")
 
 if __name__ == "__main__":
     main()
+in this code how do I take the logs and the reservation details to aws ? explain me step byy step on how to create storage on aws and then connect thsese 2 and getting kets and alll as I am complete beginner to aws
