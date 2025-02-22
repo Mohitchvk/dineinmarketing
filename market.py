@@ -8,22 +8,30 @@ from email.mime.multipart import MIMEMultipart
 import os
 
 
-import streamlit as st
 import boto3
 import json
+from botocore.exceptions import ClientError
 
 def upload_to_s3(data, bucket_name, key):
     s3 = boto3.client(
         's3',
-        aws_access_key_id=st.secrets["AWS_ACCESS_KEY_ID"],
-        aws_secret_access_key=st.secrets["AWS_SECRET_ACCESS_KEY"],
-        region_name=st.secrets["AWS_DEFAULT_REGION"]
+        aws_access_key_id=st.secrets["aws"]["access_key_id"],
+        aws_secret_access_key=st.secrets["aws"]["secret_access_key"],
+        region_name=st.secrets["aws"]["region"]
     )
-    s3.put_object(
-        Bucket=bucket_name,
-        Key=key,
-        Body=json.dumps(data)
-    )
+    try:
+        s3.put_object(
+            Bucket=bucket_name,
+            Key=key,
+            Body=json.dumps(data)
+        )
+    except ClientError as error:
+        # Log the error details for further inspection
+        error_code = error.response['Error']['Code']
+        error_message = error.response['Error']['Message']
+        print(f"ClientError: {error_code} - {error_message}")
+        # Optionally, re-raise the error or handle it accordingly
+        raise error
 
 # Example usage in a function
 def log_visit():
