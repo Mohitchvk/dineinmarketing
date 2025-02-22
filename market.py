@@ -43,7 +43,7 @@ def log_visit():
     }
     # Define the S3 key for this log entry.
     key = f"logs/{st.session_state.user_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.json"
-    upload_to_s3(log_data, "your-bucket-name", key)
+    upload_to_s3(log_data, "passage-marketing", key)
 
 # Configure page
 st.set_page_config(
