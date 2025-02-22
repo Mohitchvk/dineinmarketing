@@ -145,4 +145,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-in this code how do I take the logs and the reservation details to aws ? explain me step byy step on how to create storage on aws and then connect thsese 2 and getting kets and alll as I am complete beginner to aws
