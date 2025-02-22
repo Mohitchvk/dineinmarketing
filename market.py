@@ -82,8 +82,8 @@ DAILY_OFFERS = {
 def send_confirmation_email(name, email, date, party_size):
     """Send confirmation email"""
     # Email configuration
-    sender_email = "your_email@example.com"
-    sender_password = "your_email_password"
+    sender_email = "cu.18bcs1106@gmail.com"
+    sender_password = st.secrets["email"]["password"]
     
     # Create message
     message = MIMEMultipart()
