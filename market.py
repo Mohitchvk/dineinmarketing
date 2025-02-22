@@ -79,30 +79,33 @@ DAILY_OFFERS = {
 #     # For Streamlit deployment, we'll use a simple print statement
 #     print(f"Visit logged: {log_data}")
 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 def send_confirmation_email(name, email, date, party_size):
-    """Send confirmation email"""
+    """Send confirmation email using Gmail SMTP with an app password"""
     # Email configuration
     sender_email = "cu.18bcs1106@gmail.com"
-    sender_password = st.secrets["email"]["password"]
-    
+    sender_password = "Mohit@2000"  # Use your generated app password here
+
     # Create message
     message = MIMEMultipart()
     message['From'] = sender_email
     message['To'] = email
     message['Subject'] = "Reservation Confirmed!"
-    
+
     body = f"""
     Dear {name},
-    
+
     Your reservation for {party_size} on {date} has been confirmed.
     We look forward to seeing you!
-    
+
     Best regards,
     The Taste & Toast Team
     """
-    
     message.attach(MIMEText(body, 'plain'))
-    
+
     # Send email
     try:
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
