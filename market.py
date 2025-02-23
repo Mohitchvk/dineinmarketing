@@ -6,7 +6,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
-from datetime import time
+import datetime
 
 
 import boto3
@@ -141,42 +141,40 @@ def main():
     - Chef-curated pairing suggestions
     """)
     
-    # Event reservation
-import streamlit as st
-from datetime import time, date
 
-def send_confirmation_email(name, email, event_date, party_size, selected_time):
-    # Simulate sending an email (Replace with actual email logic)
-    return True  
 
+
+# Define allowed time range
+start_time = datetime.time(11, 30)  # 11:30 AM
+end_time = datetime.time(22, 0)    # 10:00 PM
+
+# Event reservation form
 with st.form("reservation"):
-    st.write("## Reserve Your Experience")
+    st.write("Reserve Your Experience")
     
+    # Input fields
     name = st.text_input("Name for reservation")
     email = st.text_input("Email address")
     party_size = st.number_input("Party size", 1, 10)
-    event_date = st.date_input("Preferred date", min_value=date.today())
-
-    # Define allowed time range
-    min_time = time(11, 30)  # 11:30 AM
-    max_time = time(22, 0)   # 10:00 PM
-
-    selected_time = st.time_input("Select a time:", value=min_time)
-
-    # Time validation
-    time_valid = min_time <= selected_time <= max_time
-    if not time_valid:
-        st.error(f"Please select a time between {min_time.strftime('%I:%M %p')} and {max_time.strftime('%I:%M %p')}.")
-
-    # Form submission
+    event_date = st.date_input("Preferred date")
+    
+    # Time selection with validation
+    event_time = st.time_input("Preferred time", value=start_time, step=300)  # Default to 11:30 AM, step of 5 minutes
+    
+    # Submit button
     if st.form_submit_button("Request Reservation"):
-        if time_valid:
-            if send_confirmation_email(name, email, event_date, party_size, selected_time):
-                st.success("✅ Reservation confirmed! Check your email for details.")
+        # Check if the selected time is within the allowed range
+        if start_time <= event_time <= end_time:
+            # Send confirmation email if time is valid
+            if send_confirmation_email(name, email, event_date, party_size, event_time):
+                st.success(f"Reservation confirmed for {event_date} at {event_time.strftime('%I:%M %p')}! Check your email for details.")
             else:
-                st.error("⚠️ There was an issue confirming your reservation. Please try again or contact us directly.")
+                st.error("There was an issue confirming your reservation. Please try again or contact us directly at +1 615-497-6113.")
         else:
-            st.error("⏰ Please select a valid time before submitting.")
+            # Display error if time is outside the allowed range
+            st.error(f"Please select a time between {start_time.strftime('%I:%M %p')} and {end_time.strftime('%I:%M %p')}.")
+
+
 
 if __name__ == "__main__":
     main()
