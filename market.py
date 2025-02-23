@@ -167,7 +167,7 @@ with st.form("reservation"):
         # Check if the selected time is within the allowed range
         if start_time <= event_time <= end_time:
             # Send confirmation email if time is valid
-            if send_confirmation_email(name, email, event_date, party_size):
+            if send_confirmation_email(name, email, event_date, party_size, event_time):
                 st.success(f"Reservation confirmed for {event_date} at {event_time.strftime('%I:%M %p')}! Check your email for details.")
             else:
                 st.error("There was an issue confirming your reservation. Please try again or contact us directly at +1 615-497-6113.")
