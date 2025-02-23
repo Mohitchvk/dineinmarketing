@@ -6,7 +6,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
-import datetime
+from datetime import datetime
 
 
 import boto3
@@ -122,7 +122,7 @@ def main():
     # Log visit
     log_visit()
     
-    today = datetime.today().weekday()
+    today = datetime.datetime.today().weekday()
     
     st.title(f"Tonight's Experience: {DAILY_OFFERS[today]}")
     
@@ -145,8 +145,8 @@ def main():
 
 
 # Define allowed time range
-start_time = datetime.time(11, 30)  # 11:30 AM
-end_time = datetime.time(22, 0)    # 10:00 PM
+start_time = datetime.datetime.time(11, 30)  # 11:30 AM
+end_time = datetime.datetime.time(22, 0)    # 10:00 PM
 
 # Event reservation form
 with st.form("reservation"):
