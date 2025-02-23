@@ -87,7 +87,7 @@ def send_confirmation_email(name, email, date, party_size):
     """Send confirmation email using Gmail SMTP with an app password"""
     # Email configuration
     sender_email = "cu.18bcs1106@gmail.com"
-    sender_password = "Mohit@2000"  # Use your generated app password here
+    sender_password = st.secrets["email"]["password"]  # Use your generated app password here
 
     # Create message
     message = MIMEMultipart()
