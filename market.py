@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 from datetime import datetime
+from datetime import time
 
 
 import boto3
@@ -145,8 +146,8 @@ def main():
 
 
 # Define allowed time range
-start_time = datetime.time(11, 30)  # 11:30 AM
-end_time = datetime.time(22, 0)    # 10:00 PM
+start_time = time(11, 30)  # 11:30 AM
+end_time = time(22, 0)    # 10:00 PM
 
 # Event reservation form
 with st.form("reservation"):
