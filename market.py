@@ -139,7 +139,7 @@ if st.session_state.get("show_reservation", False):
         
         start_time = time(11, 30)
         end_time = time(22, 0)
-        event_time = st.time_input("Preferred time", value=start_time, step=300)
+        event_time = st.time_input("Preferred time", value=start_time, step=1000)
 
         if st.form_submit_button("Confirm Reservation"):
             if start_time <= event_time <= end_time:
