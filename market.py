@@ -122,7 +122,7 @@ def main():
     # Log visit
     log_visit()
     
-    today = datetime.datetime.today().weekday()
+    today = datetime.today().weekday()
 
     
     st.title(f"Tonight's Experience: {DAILY_OFFERS[today]}")
