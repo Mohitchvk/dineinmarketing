@@ -134,7 +134,7 @@ if st.session_state.get("show_reservation", False):
     with st.form("reservation"):
         name = st.text_input("Name for reservation")
         email = st.text_input("Email address")
-        party_size = st.number_input("Party size", 1, 10)
+        party_size = st.number_input("Party size", 1, 100)
         event_date = st.date_input("Preferred date")
         
         start_time = time(11, 30)
