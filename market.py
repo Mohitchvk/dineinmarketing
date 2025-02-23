@@ -84,7 +84,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-def send_confirmation_email(name, email, date, party_size):
+def send_confirmation_email(name, email, date, party_size, event_time):
     """Send confirmation email using Gmail SMTP with an app password"""
     # Email configuration
     sender_email = "cu.18bcs1106@gmail.com"
@@ -99,7 +99,7 @@ def send_confirmation_email(name, email, date, party_size):
     body = f"""
     Dear {name},
 
-    Your reservation for {party_size} on {date} has been confirmed.
+    Your reservation for {party_size} on {date} at {event_time} has been confirmed.
     We look forward to seeing you!
 
     Best regards,
