@@ -145,8 +145,8 @@ def main():
 
 
 # Define allowed time range
-start_time = datetime.datetime.time(11, 30)  # 11:30 AM
-end_time = datetime.datetime.time(22, 0)    # 10:00 PM
+start_time = datetime.time(11, 30)  # 11:30 AM
+end_time = datetime.time(22, 0)    # 10:00 PM
 
 # Event reservation form
 with st.form("reservation"):
