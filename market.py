@@ -6,6 +6,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
+from datetime import time
 
 
 import boto3
@@ -93,7 +94,7 @@ def send_confirmation_email(name, email, date, party_size):
     message = MIMEMultipart()
     message['From'] = sender_email
     message['To'] = email
-    message['Subject'] = "Reservation Confirmed!"
+    message['Subject'] = "Reservation Confirmed at Passage"
 
     body = f"""
     Dear {name},
@@ -141,18 +142,41 @@ def main():
     """)
     
     # Event reservation
-    with st.form("reservation"):
-        st.write("Reserve Your Experience")
-        name = st.text_input("Name for reservation")
-        email = st.text_input("Email address")
-        party_size = st.number_input("Party size", 1, 10)
-        event_date = st.date_input("Preferred date")
-        
-        if st.form_submit_button("Request Reservation"):
-            if send_confirmation_email(name, email, event_date, party_size):
-                st.success("Reservation confirmed! Check your email for details.")
+import streamlit as st
+from datetime import time, date
+
+def send_confirmation_email(name, email, event_date, party_size, selected_time):
+    # Simulate sending an email (Replace with actual email logic)
+    return True  
+
+with st.form("reservation"):
+    st.write("## Reserve Your Experience")
+    
+    name = st.text_input("Name for reservation")
+    email = st.text_input("Email address")
+    party_size = st.number_input("Party size", 1, 10)
+    event_date = st.date_input("Preferred date", min_value=date.today())
+
+    # Define allowed time range
+    min_time = time(11, 30)  # 11:30 AM
+    max_time = time(22, 0)   # 10:00 PM
+
+    selected_time = st.time_input("Select a time:", value=min_time)
+
+    # Time validation
+    time_valid = min_time <= selected_time <= max_time
+    if not time_valid:
+        st.error(f"Please select a time between {min_time.strftime('%I:%M %p')} and {max_time.strftime('%I:%M %p')}.")
+
+    # Form submission
+    if st.form_submit_button("Request Reservation"):
+        if time_valid:
+            if send_confirmation_email(name, email, event_date, party_size, selected_time):
+                st.success("✅ Reservation confirmed! Check your email for details.")
             else:
-                st.error("There was an issue confirming your reservation. Please try again or contact us directly.")
+                st.error("⚠️ There was an issue confirming your reservation. Please try again or contact us directly.")
+        else:
+            st.error("⏰ Please select a valid time before submitting.")
 
 if __name__ == "__main__":
     main()
