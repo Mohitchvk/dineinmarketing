@@ -127,7 +127,7 @@ st.markdown("""
 # Display Tonight’s Experience
 st.markdown(f"""
     <div class="experience-card">
-        <h2>✨ Tonight's Experience at passage✨</h2>
+        <h2>✨ Tonight's Experience✨</h2>
         <p><strong>{tonights_experience["event"]}</strong> - {tonights_experience["info"]}</p>
     </div>
 """, unsafe_allow_html=True)
