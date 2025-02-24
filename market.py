@@ -194,6 +194,9 @@ if st.session_state.get("show_reservation", False):
                 if send_confirmation_email(name, email, event_date, party_size, event_time):
                     log_event("Reservation", f"{name} booked for {event_date} at {event_time}")
                     st.success(f"✅ Reservation confirmed for {event_date} at {event_time.strftime('%I:%M %p')}!")
+                else:           
+                    st.error("There was an issue confirming your reservation. Please try again or contact us directly at +1 615-497-6113.")
+
             else:
                 st.error(f"⏰ Please select a time between {start_time.strftime('%I:%M %p')} and {end_time.strftime('%I:%M %p')}.")
 
