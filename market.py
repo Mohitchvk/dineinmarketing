@@ -39,6 +39,45 @@ def log_event(action, detail):
     key = f"logs/{st.session_state.user_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.json"
     upload_to_s3(log_data, "passage-marketing", key)
 
+def send_confirmation_email(name, email, date, party_size, event_time):
+    """Send confirmation email using Gmail SMTP"""
+    sender_email = "cu.18bcs1106@gmail.com"
+    
+    # Check if email password is available
+    if "email" not in st.secrets or "password" not in st.secrets["email"]:
+        print("Email secrets not found.")
+        return False
+    
+    sender_password = st.secrets["email"]["password"]
+
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = email
+    message['Subject'] = "Reservation Confirmed at Passage"
+
+    body = f"""
+    Dear {name},
+
+    Your reservation for {party_size} people on {date.strftime('%B %d, %Y')} at {event_time.strftime('%I:%M %p')} has been confirmed.
+    We look forward to seeing you!
+
+    Best regards,
+    The Taste & Toast Team
+    """
+    message.attach(MIMEText(body, 'plain'))
+
+    try:
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.send_message(message)
+        return True
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return False
+
+
+
 # Configure Streamlit Page
 st.set_page_config(
     page_title="🍷 The Taste & Toast Experience",
@@ -152,8 +191,9 @@ if st.session_state.get("show_reservation", False):
 
         if st.form_submit_button("Confirm Reservation"):
             if start_time <= event_time <= end_time:
-                log_event("Reservation", f"{name} booked for {event_date} at {event_time}")
-                st.success(f"✅ Reservation confirmed for {event_date} at {event_time.strftime('%I:%M %p')}!")
+                if send_confirmation_email(name, email, event_date, party_size, event_time):
+                    log_event("Reservation", f"{name} booked for {event_date} at {event_time}")
+                    st.success(f"✅ Reservation confirmed for {event_date} at {event_time.strftime('%I:%M %p')}!")
             else:
                 st.error(f"⏰ Please select a time between {start_time.strftime('%I:%M %p')} and {end_time.strftime('%I:%M %p')}.")
 
