@@ -48,7 +48,7 @@ st.set_page_config(
 
 logo = Image.open("passagetoindia2.png")  # Ensure "logo.png" is in your working directory
 st.image(logo, use_column_width=True)
-st.markdown("<div style='text-align: center;'><img src='logo.png' width='150'></div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align: center;'><img src='passagetoindia2.png' width='15'></div>", unsafe_allow_html=True)
 
 
 # Initialize session state
