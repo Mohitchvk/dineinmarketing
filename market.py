@@ -9,6 +9,10 @@ from datetime import datetime, time
 import boto3
 import json
 from botocore.exceptions import ClientError
+from PIL import Image
+
+
+
 
 # Function to upload logs to S3
 def upload_to_s3(data, bucket_name, key):
@@ -41,6 +45,11 @@ st.set_page_config(
     page_icon="🥂",
     layout="centered"
 )
+
+logo = Image.open("passagetoindia2.png")  # Ensure "logo.png" is in your working directory
+st.image(logo, use_column_width=True)
+st.markdown("<div style='text-align: center;'><img src='logo.png' width='150'></div>", unsafe_allow_html=True)
+
 
 # Initialize session state
 if 'user_id' not in st.session_state:
@@ -118,7 +127,7 @@ st.markdown("""
 # Display Tonight’s Experience
 st.markdown(f"""
     <div class="experience-card">
-        <h2>✨ Tonight's Experience ✨</h2>
+        <h2>✨ Tonight's Experience at passage✨</h2>
         <p><strong>{tonights_experience["event"]}</strong> - {tonights_experience["info"]}</p>
     </div>
 """, unsafe_allow_html=True)
