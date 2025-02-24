@@ -48,13 +48,13 @@ if 'user_id' not in st.session_state:
 
 # Weekly Event Data
 DAILY_EVENTS = [
-    {"day": "Monday", "event": "🍹 Masterclass", "info": "Craft Cocktail Education Session"},
-    {"day": "Tuesday", "event": "🧀 Tasting", "info": "Artisanal Cheese Pairing Experience"},
-    {"day": "Wednesday", "event": "🍷 Wine Night", "info": "Regional Varietal Exploration"},
-    {"day": "Thursday", "event": "🍸 Throwback", "info": "Historical Mixology Demo"},
-    {"day": "Friday", "event": "🔥 Firepit", "info": "Live Patio Music & Mixology"},
-    {"day": "Saturday", "event": "🥂 Cellar Reserve", "info": "Rare Reserve Tasting"},
-    {"day": "Sunday", "event": "👨‍🍳 Chef’s Special", "info": "Exclusive Chef’s Tasting Menu"}
+    {"day": "Monday", "event": "🍹 Spice Symphony", "info": "Indian Curry & Wine Pairing Night", "more info": "A curated 3-course meal, paired with a Exquisite wine"},
+    {"day": "Tuesday", "event": "🧀 Royal Feast", "info": "Nawabi Biryani & Craft Beverage Night", "more info": "Indulge in the rich, aromatic flavors of Indian Rice Dishes, paired with artisanal drinks."},
+    {"day": "Wednesday", "event": "🍷 Spirits & Spices", "info": "Indian-Inspired Cocktails", "more info": "Indulge in the rich, aromatic flavors of Hyderabad & Lucknow, paired with artisanal drinks."},
+    {"day": "Thursday", "event": "🍸 Bollywood Night", "info": "Chaat & Mocktail/ Cocktail Fiesta", "more info": "A lively Bollywood evening featuring street food & vibrant drinks"},
+    {"day": "Friday", "event": "🔥 Healthy Tandoor & Whiskey Tales", "info": "Grill & Whiskey Appreciation Night", "more info": "grilled smoky tandoori delicacies, complemented by fine whiskey"},
+    {"day": "Saturday", "event": "🥂 The Maharaja Thali", "info": "Indian Curry & infused drink Pairing Night", "more info": "A lavish 3-course meal paired with infused drinks"},
+    {"day": "Sunday", "event": "👨‍🍳 Sweet Endings", "info": "Indian Dessert & Chai Pairing", "more info": "A decadent Indian dessert tasting paired with gourmet chai"}
 ]
 
 # Get today's experience
