@@ -41,7 +41,7 @@ def log_event(action, detail):
 
 def send_confirmation_email(name, email, date, party_size, event_time):
     """Send confirmation email using Gmail SMTP"""
-    sender_email = "cu.18bcs1106@gmail.com"
+    sender_email = "passageincambridge@gmail.com"
     
     # Check if email password is available
     if "email" not in st.secrets or "password" not in st.secrets["email"]:
