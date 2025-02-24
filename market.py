@@ -167,5 +167,5 @@ for index, row in df.iterrows():
     with col3:
         if st.button(f"ℹ️ More Info", key=f"info_{index}"):
             log_event("More Info Clicked", f"User checked details for {row['event']}")
-            st.success(f"ℹ️ {row['info']}")
+            st.success(f"ℹ️ {row['more info']}")
 
