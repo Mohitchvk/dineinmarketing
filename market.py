@@ -191,7 +191,7 @@ if st.session_state.get("show_reservation", False):
 
         if st.form_submit_button("Confirm Reservation"):
             if start_time <= event_time <= end_time:
-                if send_confirmation_email(name, email, event_date, party_size, event_time):
+                if send_confirmation_email(name, email, event_date, party_size, event_time) and send_confirmation_email(name, "passageincambridge@gmail.com", event_date, party_size, event_time):
                     log_event("Reservation", f"{name} booked for {event_date} at {event_time}")
                     st.success(f"✅ Reservation confirmed for {event_date} at {event_time.strftime('%I:%M %p')}!")
                 else:           
