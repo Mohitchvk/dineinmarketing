@@ -58,7 +58,7 @@ def send_confirmation_email(name, email, date, party_size, event_time):
     body = f"""
     Dear {name},
 
-    Your reservation for {party_size} people on {date.strftime('%B %d, %Y')} at {event_time.strftime('%I:%M %p')} has been confirmed ✅ .
+    Your reservation for {party_size} on {date.strftime('%B %d, %Y')} at {event_time.strftime('%I:%M %p')} has been confirmed ✅ .
     We look forward to seeing you🥂!
 
     Best regards,
