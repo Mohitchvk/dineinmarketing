@@ -111,7 +111,13 @@ eastern = pytz.timezone('US/Eastern')
 
 # Get today's experience
 today = datetime.now(eastern).strftime('%A')
-tonights_experience = DAILY_EVENTS[today]
+
+# Find today's event
+tonights_experience = next((event for event in DAILY_EVENTS if event["day"] == today), None)
+
+# Handle the case where no matching event is found (shouldn't happen unless there's a typo)
+if tonights_experience is None:
+    raise ValueError(f"No event found for {today}")
 
 # Adaptive CSS for Light & Dark Mode
 st.markdown("""
