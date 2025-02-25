@@ -10,6 +10,9 @@ import boto3
 import json
 from botocore.exceptions import ClientError
 from PIL import Image
+import pytz
+
+eastern = pytz.timezone('US/Eastern')
 
 
 
@@ -106,8 +109,10 @@ DAILY_EVENTS = [
 ]
 
 # Get today's experience
-today = datetime.today().weekday()
+today = datetime.now(eastern).strftime('%A')
 tonights_experience = DAILY_EVENTS[today]
+
+
 
 # Adaptive CSS for Light & Dark Mode
 st.markdown("""
