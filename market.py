@@ -104,9 +104,13 @@ DAILY_EVENTS = [
     {"day": "Saturday", "event": "🥂 The Maharaja Thali", "info": "Indian Curry & infused drink Pairing Night", "more info": "A lavish 3-course meal paired with infused drinks"},
     {"day": "Sunday", "event": "👨‍🍳 Sweet Endings", "info": "Indian Dessert & Chai Pairing", "more info": "A decadent Indian dessert tasting paired with gourmet chai"}
 ]
+import pytz
+
+eastern = pytz.timezone('US/Eastern')
+
 
 # Get today's experience
-today = datetime.today().weekday()
+today = datetime.now(eastern).strftime('%A')
 tonights_experience = DAILY_EVENTS[today]
 
 # Adaptive CSS for Light & Dark Mode
